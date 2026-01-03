@@ -18,7 +18,7 @@ class LoadingScreen {
             // Aguardar um pouco para mostrar a frase
             setTimeout(() => {
                 this.hide();
-            }, 2000); // Mostra por 2 segundos
+            }, 5000); // Mostra por 2 segundos
         });
 
         // Fallback: se já estiver carregado
