@@ -1,3 +1,4 @@
+/* Tema Dark (padrão) */
 :root {
     --primary-color: #22c55e;
     --primary-light: #4ade80;
@@ -5,6 +6,17 @@
     --secondary-color: #3b82f6;
     --danger-color: #ef4444;
     --warning-color: #f97316;
+    --text-primary: #f9fafb;
+    --text-secondary: #d1d5db;
+    --bg-primary: #1f2937;
+    --bg-secondary: #111827;
+    --border-color: #374151;
+    --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+}
+
+/* Tema Light */
+[data-theme="light"] {
     --text-primary: #1f2937;
     --text-secondary: #6b7280;
     --bg-primary: #ffffff;
@@ -80,8 +92,10 @@ body {
 
 .main-content {
     flex: 1;
-    padding: 1rem;
-    overflow-y: auto;
+    padding: 0.5rem;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
 }
 
 .btn {
@@ -331,6 +345,13 @@ body {
     border: 1px solid var(--border-color);
     border-radius: 0.5rem;
     font-size: 1rem;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+.time-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
 }
 
 .checklist-items-list {
