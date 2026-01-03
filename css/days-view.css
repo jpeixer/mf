@@ -1,0 +1,128 @@
+.days-wrapper {
+    width: 100%;
+    max-width: 100%;
+    height: calc(100vh - 60px);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.year-title {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    text-align: center;
+    margin-bottom: 0.3rem;
+    padding: 0.2rem;
+    flex-shrink: 0;
+}
+
+.days-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(30px, 1fr));
+    gap: 0.15rem;
+    flex: 1;
+    padding: 0.3rem;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.day-square {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.3rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-weight: 600;
+    font-size: 0.5rem;
+    position: relative;
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    min-height: 0;
+}
+
+.day-square:hover {
+    transform: scale(1.1);
+    border-color: var(--primary-color);
+    z-index: 10;
+    box-shadow: var(--shadow-md);
+}
+
+.day-square.today {
+    border-color: var(--primary-color);
+    border-width: 2px;
+    font-weight: 700;
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.day-square.has-record {
+    border-width: 2px;
+}
+
+/* Score Colors */
+.day-square.score-excellent {
+    background-color: #22c55e;
+    color: white;
+    border-color: #16a34a;
+}
+
+.day-square.score-good {
+    background-color: #4ade80;
+    color: white;
+    border-color: #22c55e;
+}
+
+.day-square.score-regular {
+    background-color: #eab308;
+    color: white;
+    border-color: #ca8a04;
+}
+
+.day-square.score-bad {
+    background-color: #f97316;
+    color: white;
+    border-color: #ea580c;
+}
+
+.day-square.score-very-bad {
+    background-color: #ef4444;
+    color: white;
+    border-color: #dc2626;
+}
+
+/* Otimizado para iPhone 12 (390px de largura) */
+@media (max-width: 428px) {
+    .days-container {
+        grid-template-columns: repeat(auto-fill, minmax(25px, 1fr));
+        gap: 0.1rem;
+        padding: 0.2rem;
+    }
+
+    .day-square {
+        font-size: 0.45rem;
+        border-width: 0.5px;
+    }
+
+    .day-square.today {
+        border-width: 1.5px;
+    }
+
+    .day-square.has-record {
+        border-width: 1.5px;
+    }
+}
+
+/* Para telas muito pequenas */
+@media (max-width: 375px) {
+    .days-container {
+        grid-template-columns: repeat(auto-fill, minmax(22px, 1fr));
+    }
+
+    .day-square {
+        font-size: 0.4rem;
+    }
+}
+

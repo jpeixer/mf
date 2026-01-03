@@ -12,7 +12,7 @@
     <link rel="manifest" href="manifest.json">
     <title>Memento Mori 💀</title>
     <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="css/calendar.css">
+    <link rel="stylesheet" href="css/days-view.css">
 </head>
 <body>
     <div class="app-container">
@@ -26,15 +26,9 @@
         </header>
 
         <main class="main-content">
-            <div class="calendar-wrapper">
+            <div class="days-wrapper">
                 <h2 class="year-title">2026</h2>
-                <div id="allMonthsContainer" class="all-months-container"></div>
-            </div>
-
-            <div id="dayDetails" class="day-details hidden">
-                <h3 id="dayDetailsTitle"></h3>
-                <div id="dayDetailsContent"></div>
-                <button id="closeDetailsBtn" class="close-btn">Fechar</button>
+                <div id="daysContainer" class="days-container"></div>
             </div>
         </main>
 
@@ -50,7 +44,7 @@
     <script src="js/theme.js"></script>
     <script src="js/storage.js"></script>
     <script src="js/notifications.js"></script>
-    <script src="js/calendar.js"></script>
+    <script src="js/days-view.js"></script>
     <script src="js/app.js"></script>
 </body>
 </html>

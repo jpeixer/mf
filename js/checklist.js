@@ -5,6 +5,34 @@ class ChecklistManager {
     }
 
     init() {
+        // Carregar dados do dia atual
+        const dayDataStr = localStorage.getItem('currentDayData');
+        if (dayDataStr) {
+            const dayData = JSON.parse(dayDataStr);
+            this.dayNumber = dayData.dayNumber;
+            this.date = new Date(dayData.date);
+            this.dateStr = dayData.dateStr;
+            
+            // Atualizar título do checklist
+            const titleEl = document.getElementById('checklistTitle');
+            if (titleEl) {
+                titleEl.textContent = `${this.dateStr} - ${String(this.dayNumber).padStart(3, '0')}/365`;
+            }
+        } else {
+            // Se não houver dados, usar data atual
+            const today = new Date();
+            this.date = today;
+            this.dateStr = today.toLocaleDateString('pt-BR');
+            const start = new Date(today.getFullYear(), 0, 0);
+            const diff = today - start;
+            this.dayNumber = Math.floor(diff / (1000 * 60 * 60 * 24));
+            
+            const titleEl = document.getElementById('checklistTitle');
+            if (titleEl) {
+                titleEl.textContent = `${this.dateStr} - ${String(this.dayNumber).padStart(3, '0')}/365`;
+            }
+        }
+
         // Carregar itens do checklist
         this.items = StorageManager.getChecklistItems().map(item => ({
             ...item,
@@ -173,9 +201,12 @@ class ChecklistManager {
         const completedItems = this.items.filter(i => i.status === 'completed').length;
         const totalItems = this.items.length;
         
+        // Usar a data do dia selecionado
+        const recordDate = this.date || new Date();
+        
         const record = {
-            id: StorageManager.getDateKey(new Date()),
-            date: new Date(),
+            id: StorageManager.getDateKey(recordDate),
+            date: recordDate,
             score: score,
             completedItems: completedItems,
             totalItems: totalItems

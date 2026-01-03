@@ -19,9 +19,9 @@ if ('serviceWorker' in navigator) {
 
 // Lógica principal da aplicação
 document.addEventListener('DOMContentLoaded', () => {
-    // Inicializar calendário
-    const calendar = new CalendarManager();
-    calendar.render();
+    // Inicializar visualização de dias
+    const daysView = new DaysViewManager();
+    daysView.render();
 
     // Fechar detalhes do dia
     const closeDetailsBtn = document.getElementById('closeDetailsBtn');
@@ -71,9 +71,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Atualizar calendário quando voltar de outras páginas
+    // Atualizar visualização quando voltar de outras páginas
     window.addEventListener('focus', () => {
-        calendar.refresh();
+        daysView.refresh();
     });
 });
 
