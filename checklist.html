@@ -9,12 +9,26 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <title>Checklist - Memento Mori 💀</title>
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/loading-screen.css">
 </head>
 <body>
+    <!-- Tela de Carregamento -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loading-content">
+            <div class="loading-logo">💀</div>
+            <div class="quote-container">
+                <p id="quoteText" class="quote-text"></p>
+            </div>
+            <div class="loading-spinner"></div>
+        </div>
+    </div>
     <div class="app-container">
         <header class="app-header">
             <button id="backBtn" class="icon-btn" aria-label="Voltar">←</button>
-            <h1 id="checklistTitle">Meu Checklist</h1>
+            <div class="header-title-container">
+                <h1 id="checklistTitle">Meu Checklist</h1>
+                <p id="dailyQuote" class="daily-quote"></p>
+            </div>
         </header>
 
         <main class="main-content">
@@ -62,8 +76,10 @@
 
     <script src="js/base-path.js"></script>
     <script src="js/theme.js"></script>
+    <script src="js/motivational-quotes.js"></script>
     <script src="js/storage.js"></script>
     <script src="js/checklist.js"></script>
+    <script src="js/loading-screen.js"></script>
 </body>
 </html>
 

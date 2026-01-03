@@ -13,8 +13,20 @@
     <title>Memento Mori 💀</title>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/days-view.css">
+    <link rel="stylesheet" href="css/loading-screen.css">
 </head>
 <body>
+    <!-- Tela de Carregamento -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loading-content">
+            <div class="loading-logo">💀</div>
+            <div class="quote-container">
+                <p id="quoteText" class="quote-text"></p>
+            </div>
+            <div class="loading-spinner"></div>
+        </div>
+    </div>
+
     <div class="app-container">
         <header class="app-header">
             <h1>Memento Mori 💀</h1>
@@ -42,10 +54,12 @@
 
     <script src="js/base-path.js"></script>
     <script src="js/theme.js"></script>
+    <script src="js/motivational-quotes.js"></script>
     <script src="js/storage.js"></script>
     <script src="js/notifications.js"></script>
     <script src="js/days-view.js"></script>
     <script src="js/app.js"></script>
+    <script src="js/loading-screen.js"></script>
 </body>
 </html>
 

@@ -33,6 +33,13 @@ class ChecklistManager {
             }
         }
 
+        // Mostrar frase do dia no cabeçalho
+        const quoteEl = document.getElementById('dailyQuote');
+        if (quoteEl && typeof getQuoteOfTheDay === 'function') {
+            const quote = getQuoteOfTheDay();
+            quoteEl.textContent = `"${quote}"`;
+        }
+
         // Carregar itens do checklist
         this.items = StorageManager.getChecklistItems().map(item => ({
             ...item,
