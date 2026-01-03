@@ -1,4 +1,4 @@
-const CACHE_NAME = 'metas-diarias-v1';
+const CACHE_NAME = 'metas-diarias-v2';
 
 // Função para obter caminho base
 function getBasePath() {
@@ -18,16 +18,23 @@ const urlsToCache = [
     base + 'checklist.html',
     base + 'settings.html',
     base + 'css/styles.css',
-    base + 'css/calendar.css',
+    base + 'css/days-view.css',
     base + 'js/app.js',
-    base + 'js/calendar.js',
+    base + 'js/days-view.js',
     base + 'js/checklist.js',
     base + 'js/notifications.js',
     base + 'js/storage.js',
+    base + 'js/base-path.js',
+    base + 'js/theme.js',
+    base + 'js/loading-screen.js',
+    base + 'js/motivational-quotes.js',
     base + 'manifest.json',
     base + 'icons/icon-192.png',
     base + 'icons/icon-512.png'
 ];
+
+// Armazenar timers de notificações agendadas
+const scheduledNotifications = new Map();
 
 // Install event - cache resources
 self.addEventListener('install', (event) => {
@@ -40,6 +47,7 @@ self.addEventListener('install', (event) => {
                 console.log('Erro ao fazer cache:', err);
             })
     );
+    self.skipWaiting();
 });
 
 // Fetch event - serve from cache, fallback to network
@@ -75,5 +83,84 @@ self.addEventListener('activate', (event) => {
                 })
             );
         })
+    );
+    return self.clients.claim();
+});
+
+// Mensagem do cliente para agendar notificações
+self.addEventListener('message', (event) => {
+    if (event.data && event.data.type === 'SCHEDULE_NOTIFICATION') {
+        const { time, delay, title, body, tag } = event.data;
+        
+        // Limpar notificação anterior para este horário se existir
+        if (scheduledNotifications.has(tag)) {
+            clearTimeout(scheduledNotifications.get(tag));
+        }
+        
+        // Agendar nova notificação
+        const timeoutId = setTimeout(() => {
+            self.registration.showNotification(title, {
+                body: body,
+                icon: base + 'icons/icon-192.png',
+                badge: base + 'icons/icon-192.png',
+                tag: tag,
+                requireInteraction: true,
+                data: {
+                    url: base + 'checklist.html'
+                }
+            });
+            
+            // Remover do mapa após disparar
+            scheduledNotifications.delete(tag);
+            
+            // Reagendar para o próximo dia
+            const nextDay = new Date();
+            nextDay.setDate(nextDay.getDate() + 1);
+            const [hours, minutes] = time.split(':').map(Number);
+            nextDay.setHours(hours, minutes, 0, 0);
+            const nextDelay = nextDay.getTime() - Date.now();
+            
+            if (nextDelay > 0) {
+                const nextTimeoutId = setTimeout(() => {
+                    self.registration.showNotification(title, {
+                        body: body,
+                        icon: base + 'icons/icon-192.png',
+                        badge: base + 'icons/icon-192.png',
+                        tag: tag,
+                        requireInteraction: true,
+                        data: {
+                            url: base + 'checklist.html'
+                        }
+                    });
+                }, nextDelay);
+                scheduledNotifications.set(tag, nextTimeoutId);
+            }
+        }, delay);
+        
+        scheduledNotifications.set(tag, timeoutId);
+    }
+});
+
+// Clique na notificação
+self.addEventListener('notificationclick', (event) => {
+    event.notification.close();
+    
+    const urlToOpen = event.notification.data?.url || base + 'checklist.html';
+    
+    event.waitUntil(
+        clients.matchAll({ type: 'window', includeUncontrolled: true })
+            .then((clientList) => {
+                // Se já existe uma janela aberta, focar nela
+                for (let i = 0; i < clientList.length; i++) {
+                    const client = clientList[i];
+                    if (client.url.includes(urlToOpen) && 'focus' in client) {
+                        return client.focus();
+                    }
+                }
+                // Se não, abrir nova janela
+                if (clients.openWindow) {
+                    return clients.openWindow(urlToOpen);
+                }
+            })
     );
 });

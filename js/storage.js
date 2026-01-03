@@ -6,11 +6,17 @@ class StorageManager {
         CURRENT_CHECKLIST: 'metas_diarias_current_checklist'
     };
 
+    // Horários fixos de notificação
+    static getNotificationTimes() {
+        return ['05:30', '12:30', '18:30'];
+    }
+
     // Settings
     static getSettings() {
         const defaultSettings = {
             alarmTime: '07:00',
-            alarmEnabled: true
+            alarmEnabled: true,
+            notificationsEnabled: true
         };
         const stored = localStorage.getItem(this.STORAGE_KEYS.SETTINGS);
         return stored ? { ...defaultSettings, ...JSON.parse(stored) } : defaultSettings;

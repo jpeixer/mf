@@ -54,6 +54,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // Verificar alarme
     NotificationManager.startAlarmChecker();
 
+    // Solicitar permissão de notificação ao carregar
+    if ('Notification' in window && Notification.permission === 'default') {
+        NotificationManager.requestPermission();
+    }
+
     // Verificar se deve mostrar banner de alarme
     const settings = StorageManager.getSettings();
     if (settings.alarmEnabled && settings.alarmTime) {
