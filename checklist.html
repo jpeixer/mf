@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Checklist de metas diárias">
+    <meta name="theme-color" content="#22c55e">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <title>Checklist - Metas Diárias</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <button id="backBtn" class="icon-btn" aria-label="Voltar">←</button>
+            <h1>Meu Checklist</h1>
+        </header>
+
+        <main class="main-content">
+            <div class="checklist-container">
+                <div class="progress-section">
+                    <div class="progress-bar-container">
+                        <div id="progressBar" class="progress-bar" style="width: 0%"></div>
+                    </div>
+                    <p class="progress-text">
+                        <span id="completedCount">0</span> de <span id="totalCount">0</span> concluídos
+                    </p>
+                </div>
+
+                <div id="checklistItems" class="checklist-items">
+                    <!-- Itens serão inseridos aqui via JavaScript -->
+                </div>
+
+                <div class="checklist-actions">
+                    <button id="addItemBtn" class="btn btn-secondary">+ Adicionar Item</button>
+                    <button id="finishBtn" class="btn btn-primary">Finalizar Checklist</button>
+                </div>
+
+                <div id="finishSection" class="finish-section hidden">
+                    <div class="score-display">
+                        <h2>Checklist Finalizado! 🎉</h2>
+                        <p class="score">Nota: <span id="finalScore"></span></p>
+                        <p class="completion-info"><span id="completedInfo"></span></p>
+                        <div id="scoreColor" class="score-color"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="addItemModal" class="modal hidden">
+        <div class="modal-content">
+            <h3>Adicionar Item</h3>
+            <input type="text" id="newItemInput" placeholder="Nome do item..." maxlength="50">
+            <div class="modal-actions">
+                <button id="cancelAddBtn" class="btn btn-secondary">Cancelar</button>
+                <button id="confirmAddBtn" class="btn btn-primary">Adicionar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/base-path.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/checklist.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Configurações do app">
+    <meta name="theme-color" content="#22c55e">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>Configurações - Metas Diárias</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <button id="backBtn" class="icon-btn" aria-label="Voltar">←</button>
+            <h1>Configurações</h1>
+        </header>
+
+        <main class="main-content">
+            <div class="settings-container">
+                <section class="settings-section">
+                    <h2>⏰ Alarme</h2>
+                    <div class="setting-item">
+                        <label for="alarmTime">Hora do despertador:</label>
+                        <input type="time" id="alarmTime" class="time-input">
+                    </div>
+                    <div class="setting-item">
+                        <label>
+                            <input type="checkbox" id="alarmEnabled">
+                            Ativar alarme
+                        </label>
+                    </div>
+                </section>
+
+                <section class="settings-section">
+                    <h2>✓ Itens do Checklist</h2>
+                    <div id="checklistItemsList" class="checklist-items-list">
+                        <!-- Itens serão inseridos aqui -->
+                    </div>
+                    <button id="addChecklistItemBtn" class="btn btn-secondary">+ Adicionar Item</button>
+                </section>
+
+                <section class="settings-section">
+                    <h2>📊 Dados</h2>
+                    <button id="clearDataBtn" class="btn btn-danger">Limpar Todos os Dados</button>
+                    <p class="help-text">Isso apagará todos os registros e configurações</p>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <div id="addItemModal" class="modal hidden">
+        <div class="modal-content">
+            <h3>Adicionar Item ao Checklist</h3>
+            <input type="text" id="newItemInput" placeholder="Ex: Tomar água" maxlength="50">
+            <div class="modal-actions">
+                <button id="cancelAddBtn" class="btn btn-secondary">Cancelar</button>
+                <button id="confirmAddBtn" class="btn btn-primary">Adicionar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/base-path.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        // Configurações específicas
+        document.addEventListener('DOMContentLoaded', () => {
+            const backBtn = document.getElementById('backBtn');
+            const alarmTime = document.getElementById('alarmTime');
+            const alarmEnabled = document.getElementById('alarmEnabled');
+            const checklistItemsList = document.getElementById('checklistItemsList');
+            const addChecklistItemBtn = document.getElementById('addChecklistItemBtn');
+            const addItemModal = document.getElementById('addItemModal');
+            const newItemInput = document.getElementById('newItemInput');
+            const cancelAddBtn = document.getElementById('cancelAddBtn');
+            const confirmAddBtn = document.getElementById('confirmAddBtn');
+            const clearDataBtn = document.getElementById('clearDataBtn');
+
+            // Voltar
+            backBtn.addEventListener('click', () => {
+                window.location.href = getRelativePath('index.html');
+            });
+
+            // Carregar configurações
+            const settings = StorageManager.getSettings();
+            if (settings.alarmTime) {
+                alarmTime.value = settings.alarmTime;
+            }
+            alarmEnabled.checked = settings.alarmEnabled !== false;
+
+            // Salvar alarme
+            alarmTime.addEventListener('change', () => {
+                StorageManager.saveSettings({
+                    ...settings,
+                    alarmTime: alarmTime.value
+                });
+            });
+
+            alarmEnabled.addEventListener('change', () => {
+                StorageManager.saveSettings({
+                    ...settings,
+                    alarmEnabled: alarmEnabled.checked
+                });
+            });
+
+            // Carregar itens do checklist
+            function loadChecklistItems() {
+                const items = StorageManager.getChecklistItems();
+                checklistItemsList.innerHTML = '';
+                
+                items.forEach((item, index) => {
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'checklist-item-row';
+                    itemDiv.innerHTML = `
+                        <span>${item.title}</span>
+                        <button class="delete-btn" data-index="${index}">🗑️</button>
+                    `;
+                    checklistItemsList.appendChild(itemDiv);
+                });
+
+                // Event listeners para deletar
+                document.querySelectorAll('.delete-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const index = parseInt(e.target.dataset.index);
+                        const items = StorageManager.getChecklistItems();
+                        items.splice(index, 1);
+                        StorageManager.saveChecklistItems(items);
+                        loadChecklistItems();
+                    });
+                });
+            }
+
+            loadChecklistItems();
+
+            // Adicionar item
+            addChecklistItemBtn.addEventListener('click', () => {
+                addItemModal.classList.remove('hidden');
+                newItemInput.focus();
+            });
+
+            cancelAddBtn.addEventListener('click', () => {
+                addItemModal.classList.add('hidden');
+                newItemInput.value = '';
+            });
+
+            confirmAddBtn.addEventListener('click', () => {
+                const title = newItemInput.value.trim();
+                if (title) {
+                    const items = StorageManager.getChecklistItems();
+                    items.push({ id: Date.now().toString(), title, isCompleted: false });
+                    StorageManager.saveChecklistItems(items);
+                    loadChecklistItems();
+                    addItemModal.classList.add('hidden');
+                    newItemInput.value = '';
+                }
+            });
+
+            // Limpar dados
+            clearDataBtn.addEventListener('click', () => {
+                if (confirm('Tem certeza que deseja apagar todos os dados? Esta ação não pode ser desfeita.')) {
+                    localStorage.clear();
+                    alert('Todos os dados foram apagados.');
+                    window.location.href = getRelativePath('index.html');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
