@@ -33,19 +33,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Navegação
     const settingsBtn = document.getElementById('settingsBtn');
-    const checklistBtn = document.getElementById('checklistBtn');
     const openChecklistBtn = document.getElementById('openChecklistBtn');
     const alarmBanner = document.getElementById('alarmBanner');
 
     if (settingsBtn) {
         settingsBtn.addEventListener('click', () => {
             window.location.href = getRelativePath('settings.html');
-        });
-    }
-
-    if (checklistBtn) {
-        checklistBtn.addEventListener('click', () => {
-            window.location.href = getRelativePath('checklist.html');
         });
     }
 

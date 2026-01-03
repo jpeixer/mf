@@ -105,11 +105,10 @@ class CalendarManager {
             dayDiv.classList.add(this.getScoreClass(record.score));
         }
 
-        // Event listener para mostrar detalhes
+        // Event listener para abrir checklist ao clicar no dia
         dayDiv.addEventListener('click', () => {
-            if (record) {
-                this.showDayDetails(date, record);
-            }
+            // Sempre abre o checklist, independente de ter registro
+            window.location.href = getRelativePath('checklist.html');
         });
 
         container.appendChild(dayDiv);
